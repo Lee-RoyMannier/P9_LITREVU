@@ -1,0 +1,15 @@
+<nav class="main-nav">
+    <header class="main-logo">
+            <h2 class="logo">LITReview</h2>
+    </header>
+    <div class="nav-bar">
+        <ul class="items">
+            {% if request.user.is_authenticated %}
+            <li class="item"><a href="{% url 'feed:home'%}">Flux</a></li>
+            <li class="item"><a href="{% url 'feed:my_feed'%}">Posts</a></li>
+            <li class="item"><a href="{% url 'auth:follow' %}">Abonnements</a></li>
+            <li class="item"><a href="{% url 'auth:logout_page' %}">Se déconnecter</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

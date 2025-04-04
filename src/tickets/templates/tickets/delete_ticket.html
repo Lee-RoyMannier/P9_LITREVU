@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load models_tag %}
+{% can_create_review feed.id as can_review %}
+{% block title%}
+    delete ticket
+{% endblock title%}
+
+{% block content %}
+    <h1>Supprimer votre ticket </h1>
+    <div class="ticket box">
+                    <small>{% post_by feed.user %} demandé une critique - {{feed.time_created}}</small>
+                    <h2>{{feed.title}}</h2>
+                    <p>{{feed.description}}</p>
+                    {% if feed.image %}
+                            <img src="{{feed.image.url}}">
+                    {% endif %}
+
+                    {% if can_review  %}
+                    <div class=btn__critique>
+                        <a href="{% url 'review:review' feed.id %}">Créer une critique</a>
+
+                    </div>
+                    {% endif %}
+                    {% if feed.user == request.user and request.resolver_match.view_name == "feed:my_feed" %}
+                        <div class="btn__submit option_btn">
+                            <a href="{% url 'ticket:edit_ticket' feed.id%}">Modifier</a>
+                            <a href="">Supprimer</a>
+                        </div>
+                    {% endif %}
+                </div>
+    <hr>
+    <form method="POST">
+        {% csrf_token %}
+        <h2>Etes-vous sur de vouloir supprimer ce ticket ?</h2>
+        <a href="{{request.META.HTTP_REFERER}}">retour en arriere</a>
+        <input type="submit" value="Supprimer">
+    </form>
+{% endblock content %}

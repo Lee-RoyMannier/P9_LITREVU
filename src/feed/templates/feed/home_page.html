@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load models_tag %}
+
+{% block title %}
+    Feed
+{% endblock title %}
+
+{% block content %}
+    <main class="main__container">
+        <div class="feed__nav sub__btn">
+            <a href="{% url 'ticket:create_ticket' %}">Demander une critique</a>
+            <a href="{% url 'review:create-review' %}">Créer une critique</a>
+        </div>
+        <div class="feed">
+            {% for feed in feeds %}
+            {% if feed|model_type == "review" %}
+                {% include 'feed/partials/review.html'%}
+            {% elif feed|model_type == "ticket" %}
+                {% include 'feed/partials/ticket.html'%}
+            {% endif %}
+            {% endfor%}
+        </div>
+
+    </main>
+
+{% endblock content %}

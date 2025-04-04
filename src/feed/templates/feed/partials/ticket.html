@@ -1,0 +1,24 @@
+{% load models_tag %}
+{% can_create_review feed.id as can_review %}
+
+<div class="ticket box">
+                    <small>{% post_by feed.user %} demandé une critique - {{feed.time_created}}</small>
+                    <h2>{{feed.title}}</h2>
+                    <p>{{feed.description}}</p>
+                    {% if feed.image %}
+                            <img src="{{feed.image.url}}">
+                    {% endif %}
+
+                    {% if can_review  %}
+                    <div class=btn__critique>
+                        <a href="{% url 'review:review' feed.id %}">Créer une critique</a>
+
+                    </div>
+                    {% endif %}
+                    {% if feed.user == request.user and request.resolver_match.view_name == "feed:my_feed" %}
+                        <div class="btn__submit option_btn">
+                            <a href="{% url 'ticket:edit_ticket' feed.id%}">Modifier</a>
+                            <a href="{% url 'ticket:delete_ticket' feed.id%}">Supprimer</a>
+                        </div>
+                    {% endif %}
+                </div>

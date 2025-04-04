@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load models_tag %}
+{% block title %}
+    Votre flux de post
+{% endblock title%}
+
+{% block content %}
+    <main>
+        <h2 class="title">Vos Posts</h2>
+         <div class="feed">
+            {% for feed in feeds %}
+            {% if feed|model_type == "review" %}
+                {% include 'feed/partials/review.html'%}
+            {% elif feed|model_type == "ticket" %}
+                {% include 'feed/partials/ticket.html'%}
+            {% endif %}
+            {% endfor%}
+        </div>
+    </main>
+{% endblock content %}

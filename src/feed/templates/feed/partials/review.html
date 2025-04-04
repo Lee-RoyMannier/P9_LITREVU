@@ -1,0 +1,29 @@
+{% load models_tag %}
+<div class="review box">
+                    <small>{% post_by feed.user %} publié une critique - {{feed.time_created}}</small>
+                    <h2>{{feed.headline}}</h2>
+                    <div>
+                        {% for i in ratings %}
+                            {% if i <= feed.rating %}
+                                        ★
+                            {% else %}
+                                        ☆
+                            {% endif %}
+                        {% endfor%}
+                    </div>
+                    <p>{{feed.body}}</p>
+                    <div class="ticket ticK-review">
+                        <small>Ticket par {% post_by feed.user %}</small>
+                        <h3>{{feed.ticket.title}}</h3>
+                        <p>{{feed.ticket.description}}</p>
+                        {% if feed.ticket.image %}
+                            <img src="{{feed.ticket.image.url}}">
+                        {% endif %}
+                    </div>
+                     {% if feed.user == request.user and request.resolver_match.view_name == "feed:my_feed" %}
+                        <div class="btn__submit option_btn">
+                            <a href="{% url 'review:update_review' feed.id%}">Modifier</a>
+                            <a href="{% url 'review:delete_review' feed.id%}">Supprimer</a>
+                        </div>
+                    {% endif %}
+            </div>

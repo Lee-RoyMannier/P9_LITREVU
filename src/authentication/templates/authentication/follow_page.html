@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    follows
+{% endblock title %}
+
+{% block content %}
+    <div class="main__container">
+    <div >
+    <h2>Suivre d'autres utilisateurs</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input required type="text" name="follow_user" list="user-list" placeholder="Nom d'utilisateur" />
+        <datalist id="user-list">
+            {% for user in user_to_follow %}
+                <option value="{{ user.username }}">{{ user.username }}</option>
+            {% endfor %}
+        </datalist>
+        <input type="submit" value="Follow">
+    </form>
+        </div>
+    <div class="container">
+        <h2>Abonnements</h2>
+        {% for follow in following_user %}
+            <div class="folloging__class">
+                <h3>{{follow.username}}</h3>
+                <form method="post" action="{% url 'auth:unfollow_user' follow.pk %}">
+                    {% csrf_token %}
+                    <input name="unfollow" type="submit" value="Désabonner">
+                </form>
+            </div>
+        {% endfor %}
+        <div>
+            <h2>Abonnés</h2>
+            {% for following in following_me%}
+                <h3>{{following.username}}</h3>
+            {% endfor %}
+        </div>
+    </div>
+        </div>
+{% endblock content %}

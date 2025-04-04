@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}
+    Login
+{% endblock title %}
+
+{% block content %}
+    <main class="main">
+        <section>
+            <h2>Inscrivez-vous maintenant</h2>
+            <div class="sub__btn">
+                <a href="{% url 'auth:register_page' %}">S'inscrire</a>
+            </div>
+        </section>
+
+        <section>
+            <h2>Connectez-vous</h2>
+            <div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form_login">
+                        <input type="text" placeholder="Nom d'utilisateur" name="username">
+                        <input type="password" placeholder="Mot de passe" name="password">
+                    </div>
+                    <div  class="btn__submit">
+                        <input type="submit" value="Se connecter">
+                    </div>
+
+                </form>
+            </div>
+        </section>
+    </main>
+{% endblock content %}

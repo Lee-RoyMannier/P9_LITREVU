@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Créer un ticket
+{% endblock title %}
+
+{% block content %}
+    <h1 class="title__main">Créer un ticket</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="ticket__form">
+            {% for field in ticket_form%}
+            <label>{{field.label}}</label>
+                {{field}}
+            {% endfor %}
+        </div>
+        <img src="" id="imagePreview">
+        <div class="submit__btn">
+            <input class="btn" type="submit" value="Envoyer">
+        </div>
+    </form>
+    <script>
+        document.querySelector("input[name='image']").onchange = (e) => {
+            console.log("test")
+        document.getElementById("imagePreview").src = URL.createObjectURL(e.target.files[0]);
+        console.log(document.getElementById("imagePreview").src);
+        document.getElementById("imagePreview").style.display = "block";
+      };
+</script>
+{% endblock content %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Creation d'une critique
+{% endblock title %}
+
+{% block content %}
+    <h2>Créer une critique</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+    <div>
+         <div class="ticket__form">
+             <p>Livre/Article</p>
+            {% for field in ticket_form%}
+            <label>{{field.label}}</label>
+                {{field}}
+            {% endfor %}
+             <img src="" id="imagePreview">
+
+        </div>
+        <hr>
+        <div>
+            <p>Critique</p>
+            {{review_form.as_p}}
+        </div>
+    </div>
+        <input type="submit" value="Envoyer">
+        </form>
+    <script>
+        document.querySelector("input[name='image']").onchange = (e) => {
+            console.log("test")
+        document.getElementById("imagePreview").src = URL.createObjectURL(e.target.files[0]);
+        console.log(document.getElementById("imagePreview").src);
+        document.getElementById("imagePreview").style.display = "block";
+      };
+</script>
+{% endblock content %}
