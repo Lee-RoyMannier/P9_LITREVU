@@ -14,6 +14,7 @@ from .models import Review
 def create_review(request):
     review_form = forms.ReviewForm()
     ticket_form = TicketForm()
+
     if request.method == 'POST':
         ticket_form = TicketForm(request.POST, request.FILES)
         review_form = forms.ReviewForm(request.POST)
@@ -49,25 +50,33 @@ def respond_to_ticket(request, ticket_id):
 
 @login_required
 def update_review(request, review_id):
-    review = Review.objects.get(id=review_id)
-    review_form = forms.ReviewForm(instance=review)
-    ticket = review.ticket
-    if request.method == 'POST':
-        review_form = forms.ReviewForm(request.POST, instance=review)
-        if review_form.is_valid():
-            review.save()
-            messages.success(request, 'Your review has been submitted!')
-            return redirect("feed:home")
+    try:
+        review = Review.objects.get(id=review_id, user=request.user)
+    except Review.DoesNotExist:
+        return redirect("feed:home")
+    else:
+        review_form = forms.ReviewForm(instance=review)
+        ticket = review.ticket
+        if request.method == 'POST':
+            review_form = forms.ReviewForm(request.POST, instance=review)
+            if review_form.is_valid():
+                review.save()
+                messages.success(request, 'Your review has been submitted!')
+                return redirect("feed:home")
     return render(request, 'review/review_ticket.html', {'review_form': review_form,
                                                        "ticket":ticket})
 
 
 @login_required
 def delete_review(request, review_id):
-    review = Review.objects.get(id=review_id)
-
-    if request.method == 'POST':
-        review.delete()
-        messages.success(request, 'Your review has been deleted!')
+    try:
+        review = Review.objects.get(id=review_id, user=request.user)
+    except:
         return redirect("feed:home")
+    else:
+        if review.user == request.user:
+            if request.method == 'POST':
+                review.delete()
+                messages.success(request, 'Your review has been deleted!')
+                return redirect("feed:home")
     return render(request, 'review/delete_review.html', {'feed': review})
